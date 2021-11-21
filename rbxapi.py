@@ -48,8 +48,8 @@ class Presence:
         pd.set_option("display.max_rows", None)
         return str(Presence.get_presence(self))
 
-
-userid = input("Enter your userid: ")
-rbxcookie = input("rbx cookie: ")
-rbxapi = Presence(rbxcookie, userid)
-print(rbxapi)
+if __name__ == '__main__':
+    userid = input("Enter your userid: ")
+    rbxcookie = input("rbx cookie: ")
+    rbxapi = Presence(rbxcookie, userid)
+    print(rbxapi)
