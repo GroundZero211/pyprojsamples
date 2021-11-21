@@ -50,3 +50,5 @@ if __name__ == '__main__':
     print(Calc(100))
     print(Calc(5) + 4)
     print(Comparisons(5) > 6)
+    print(String('string') == 'spam')
+    print(String('string') == 'string')
