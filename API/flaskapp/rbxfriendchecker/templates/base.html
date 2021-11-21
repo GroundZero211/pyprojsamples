@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="{{random_int}}">
+	<meta name="description" content="Roblox Friend Checker API">
+    <link rel="shortcut icon" href="{{url_for('static', filename='favicon.ico')}}">
+    <title>{% block title %}FriendList{% endblock %}</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Handlee&display=swap');
+        @media screen and (max-width: 1365px) {
+            body {
+                background-color: #161620;
+                color: #eee;
+                font-family: 'Handlee', cursive;
+            }
+            h1 {
+                text-align: center;
+            }
+            .maincontainer {
+                width: 500px;
+                margin: auto;
+            }
+            .container {
+            	-webkit-border-radius: 10px;
+                border-radius: 10px;
+                padding: 20px;
+            }
+			.flexwrapper {
+                display: flex;
+                -webkit-justify-content: center;
+                justify-content: center;
+                -webkit-align-items: center;
+                align-items: center;
+            }
+            .flexwrapper div {
+                margin: 0px 5px 0px 5px;
+            }
+            td {
+				color: #a3a3a3;
+                text-align: center;
+				padding: 5px 5px 5px 5px;
+            }
+			table {
+				border: 1px solid #0c0c11;
+                background-color: #14141d;
+            }
+            tr:hover {
+            	-webkit-box-shadow: 1px 1px 2px #0a0a0e, -1px -1px 2px #0a0a0e;
+                box-shadow: 1px 1px 2px #0a0a0e, -1px -1px 2px #0a0a0e;
+            }
+            table, th, td {
+                border-collapse: collapse;
+            }
+            tr:nth-child(even) {
+                background-color: #222233;
+            }
+			table {
+				width: 100%;
+				table-layout: fixed;
+			}
+			td {
+				word-wrap: break-word;
+			}
+			a {
+				text-decoration: none;
+				color: inherit;
+			}
+            a:hover {
+                color: rgb(102, 163, 255);
+            }
+            p {
+                text-align: right;
+                color: #eee;
+				font-size: 14px;
+            }
+            dfn {
+                font-style: normal;
+            }
+        }
+        @media screen and (min-width: 1366px) and (max-width: 1980px) {
+            body {
+                background-color: #161620;
+                color: #eee;
+                font-family: 'Handlee', cursive;
+            }
+            h1 {
+                text-align: center;
+            }
+            .maincontainer {
+                width: 60%;
+                margin: auto;
+            }
+            .container {
+            	-webkit-border-radius: 10px;
+                border-radius: 10px;
+                padding: 20px;
+            }
+			.flexwrapper {
+                display: flex;
+                -webkit-justify-content: center;
+                justify-content: center;
+                -webkit-align-items: center;
+                align-items: center;
+            }
+            .flexwrapper div {
+                margin: 0px 5px 0px 5px;
+            }
+            td {
+                text-align: center;
+				padding: 10px 10px 10px 10px;
+            }
+			table {
+                background-color: #14141d;
+				border: 1px solid #0c0c11;
+            }
+            tr:hover {
+            	-webkit-box-shadow: 1px 1px 2px #0a0a0e, -1px -1px 2px #0a0a0e;
+                box-shadow: 1px 1px 2px #0a0a0e, -1px -1px 2px #0a0a0e;
+            }
+            tr:nth-child(even) {
+                background-color: #222233;
+            }
+            table, th, td {
+                border-collapse: collapse;
+            }
+			a {
+				text-decoration: none;
+				color: inherit;
+			}
+            a:hover {
+                color: rgb(102, 163, 255);
+            }
+            p {
+                text-align: right;
+                color: #eee;
+				font-size: 14px;
+            }
+            dfn {
+                font-style: normal;
+            }
+        }
+    </style>
+</head>
+<body oncontextmenu="return false">
+    <div class="maincontainer">
+        <div class="container">
+            <h1>{{json_data2['name']}}'s Friend List</h1>
+            <table style="width: 100%">
+                <tr>
+                    <th>ID</th>
+                    <th>USERNAME</th>
+                    <th>STATUS</th>
+                </tr>
+                {% for i in range(r) %}
+                    {% if fr[i] == 'Online' %}
+                        <!-- ROW {{i + 1}} ({{mf['data'][i]['name'] }})-->
+                        <tr>
+                            <td><a href="https://roblox.com/users/{{mf['data'][i]['id']}}/profile" target="_blank">{{mf['data'][i]['id']}}</a></td>
+                            <td style="text-align: left;"><a href="/users/{{mf['data'][i]['id']}}/friendlist">{{mf['data'][i]['name']}}</a></td>
+							<td>
+                                <div class="flexwrapper">
+                                    <div>
+                                        <div style="background-color: #1f73e2; width: 10px; height: 10px; border-radius: 50%;"></div>
+                                    </div>
+                                    <div>
+                                        <dfn title="Click for more info.."><a href="/users/{{mf['data'][i]['id']}}/profile" target="_blank">{{ token[i][:7].upper() + '..' }}</a></dfn>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+					{% elif fr[i] == 'Ingame' %}
+                         <!-- ROW {{i + 1}} ({{mf['data'][i]['name'] }})-->
+                        <tr>
+                            <td><a href="https://roblox.com/users/{{mf['data'][i]['id']}}/profile" target="_blank">{{mf['data'][i]['id']}}</a></td>
+                            <td style="text-align: left"><a href="/users/{{mf['data'][i]['id']}}/friendlist">{{mf['data'][i]['name']}}</a></td>
+							<td>
+                                <div class="flexwrapper">
+                                    <div>
+                                        <div style="background-color: green; width: 10px; height: 10px; border-radius: 50%;"></div>
+                                    </div>
+                                    <div>
+                                        <dfn title="Click for more info.."><a href="/users/{{mf['data'][i]['id']}}/profile" target="_blank">{{ token[i][:7].upper() + '..' }}</a></dfn>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% elif fr[i] == 'Studio' %}
+                         <!-- ROW {{i + 1}} ({{mf['data'][i]['name'] }})-->
+                        <tr>
+                            <td><a href="https://roblox.com/users/{{mf['data'][i]['id']}}/profile" target="_blank">{{mf['data'][i]['id']}}</a></td>
+                            <td style="text-align: left"><a href="/users/{{mf['data'][i]['id']}}/friendlist">{{mf['data'][i]['name']}}</a></td>
+							<td>
+                                <div class="flexwrapper">
+                                    <div>
+                                        <div style="background-color: #ff4500; width: 10px; height: 10px; border-radius: 50%;"></div>
+                                    </div>
+                                    <div>
+                                        <dfn title="Click for more info.."><a href="/users/{{mf['data'][i]['id']}}/profile" target="_blank">{{ token[i][:7].upper() + '..' }}</a></dfn>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% else %}
+                         <!-- ROW {{i + 1}} ({{mf['data'][i]['name'] }})-->
+                    <tr>
+                        <td><a href="https://roblox.com/users/{{mf['data'][i]['id']}}/profile" target="_blank">{{mf['data'][i]['id']}}</a></td>
+                        <td style="text-align: left"><a href="/users/{{mf['data'][i]['id']}}/friendlist">{{mf['data'][i]['name']}}</a></td>
+                        <td><dfn title="Click for more info.."><a href="/users/{{mf['data'][i]['id']}}/profile" target="_blank">{{ fr[i]}}</a></dfn></td>
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+        <p>Webpage Made by Gil</p>
+        </div>
+    </div>
+</body>
+</html>
