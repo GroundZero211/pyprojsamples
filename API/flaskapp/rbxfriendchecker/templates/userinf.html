@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{{url_for('static', filename='favicon.ico')}}">
+    <title>Profile</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Handlee&display=swap');
+        html {font-family: 'handlee', cursive; background-color: #161620; color: #eee}
+        span {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="userProfile">
+        <span>Username: {{json_data2['name']}} @ {{json_data2['displayName']}}</span>
+        <span>Server: {{fakehash}}</span>
+        {% if json_data['userPresences'][0]['lastOnline'] != json_data2['created'] and json_data['userPresences'][0]['userPresenceType'] == 0 %}
+        <script>
+            const userLastActive = new Date("{{json_data['userPresences'][0]['lastOnline']}}");
+            const currentDate = new Date();
+            function la() {
+                let minutes = (60 * userLastActive.getHours()) + userLastActive.getMinutes();
+                let tminutes = ((60 * currentDate.getHours()) + currentDate.getMinutes() - minutes);
+                let f = document.getElementById('lastActive');
+                if (f.innerHTML === "{{json_data['userPresences'][0]['lastOnline']}}") {
+                    f.innerHTML = tminutes.toString() + ' minutes ago..'
+                } else {
+                    f.innerHTML = "{{json_data['userPresences'][0]['lastOnline']}}"
+                }
+            }
+        </script>
+            <span style="display: inline">Active: OFF / <a href="#" style="display: inline; color: inherit;" id='lastActive' onclick='la();'>{{json_data['userPresences'][0]['lastOnline']}}</a></span>
+        {% elif json_data['userPresences'][0]['userPresenceType'] == 3 %}
+            <span>Active: Studio</span>
+        {% elif json_data['userPresences'][0]['userPresenceType'] == 2 %}
+            <span>Active: Ingame </span>
+        {% elif json_data['userPresences'][0]['userPresenceType'] == 1 %}
+            <span>Active: Online / Website</span>
+        {% else %}
+            <span>Active: OFFLINE / SESSION EXPIRED</span>
+        {% endif %}
+    </div>
+</body>
+</html>
