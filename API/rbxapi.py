@@ -3,33 +3,32 @@ import pandas as pd
 
 class RbxAPI:
     def __init__(self, cookie_value):
-        self.cookie_name = '.ROLOSECURITY'
-        self.cookie_value = cookie_value
-
-    def get_rbxrequest(self, method, url, **kwargs):
-        session = requests.Session()
-        session.cookies.set(self.cookie_name, self.cookie_value)
-        request = session.request(method, url, **kwargs)
-        if method == "POST" or method == "PUT" or method == "PATCH" or method == "DELETE":
-            if "x-csrf-token" in request.headers:
-                session.headers["x-csrf-token"] = request.headers["x-csrf-token"]
-                if request.status_code == 403:
-                    request = session.request(method, url, **kwargs)
-        return request
-
-class Presence:
-    def __init__(self, cookie_value, userid):
         self.cookie_name = '.ROBLOSECURITY'
         self.cookie_value = cookie_value
+        self.session = requests.Session()
+        self.session.cookies.set(self.cookie_name, self.cookie_value)
+
+    def get_rbxrequest(self, method, url, **kwargs):
+        request = self.session.request(method, url, **kwargs)
+        if method == "POST" or method == "PUT" or method == "PATCH" or method == "DELETE":
+            if "x-csrf-token" in request.headers:
+                self.session.headers["x-csrf-token"] = request.headers["x-csrf-token"]
+                if request.status_code == 403:
+                    request = self.session.request(method, url, **kwargs)
+        return request
+
+class Presence(RbxAPI):
+    def __init__(self, cookie_value, userid):
         self.userid = userid
+        super().__init__(cookie_value)
+        pd.set_option('display.max_rows', None)
 
     def get_presence(self):
+        # Get Presence for a list of users
         friendlistreq = requests.get(os.getenv('url1').format(self.userid))
         json_data = friendlistreq.json()
-        listuserids = [json_data['data'][i]['id'] for i in range(len(json_data['data']))]
-        
-        req = RbxAPI.get_rbxrequest(self, "POST", os.getenv('url2'), data={"userIds": listuserids})
-        
+        listuserids = [json_data['data'][i]['id'] for i in range(len(json_data['data']))] 
+        req = self.get_rbxrequest("POST", os.getenv('url2'), data={"userIds": listuserids})    
         json_data2 = req.json()
                 
         df = pd.DataFrame(
@@ -43,13 +42,9 @@ class Presence:
             }
         )
         return df
-    
-    def __str__(self):
-        pd.set_option("display.max_rows", None)
-        return str(Presence.get_presence(self))
 
 if __name__ == '__main__':
-    userid = input("Enter your userid: ")
-    rbxcookie = input("rbx cookie: ")
-    rbxapi = Presence(rbxcookie, userid)
-    print(rbxapi)
+    user1 = Presence('rbxcookie', 'userid')
+    user2 = Presence('rbxcookie', 'userid')
+    print(user1.get_presence())
+    print(user2.get_presence())
